@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import classes from './Person.css';
 // import styled from 'styled-components';
 // import Radium from 'radium';
@@ -16,27 +16,35 @@ import classes from './Person.css';
 //     }    
 // `
 
-const person = (props) => {
-    // const style = {
-    //     '@media (min-width: 500px)': {
-    //         width: '450px'
-    //     }
-    // }
-    //ERROR HANDLING
-    // const rnd = Math.random();
-    // if(rnd > 0.7){
-    //     throw new Error('Something went wrong')
-    // }
-    return(
-        //<styledDiv>
-        <div className={classes.Person} >
-        <p onClick={props.click}>I am {props.name} and I am {props.age} years old!</p>
-        <p>{props.children}</p>
-        <input type="text" onChange={props.change} value={props.name}></input>
-        </div>
-        //</styledDiv>
-    );
+class Person extends Component{
+    componentDidUpdate(prevProps, prevState, snapshot){
+        console.log('Person [componentDidUpdate]')
+        console.log(snapshot)
+    }
+
+    render(){
+        console.log('Person [render]')
+        // const style = {
+        //     '@media (min-width: 500px)': {
+        //         width: '450px'
+        //     }
+        // }
+        //ERROR HANDLING
+        // const rnd = Math.random();
+        // if(rnd > 0.7){
+        //     throw new Error('Something went wrong')
+        // }
+        return(
+            //<styledDiv>
+            <div className={classes.Person} >
+            <p onClick={this.props.click}>I am {this.props.name} and I am {this.props.age} years old!</p>
+            <p>{this.props.children}</p>
+            <input type="text" onChange={this.props.change} value={this.props.name}></input>
+            </div>
+            //</styledDiv>
+        );
+    }
 }
 
 // export default Radium(person);
-export default person;
+export default Person;

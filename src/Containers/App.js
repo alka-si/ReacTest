@@ -15,8 +15,10 @@ class App extends Component {
         { id : '1', name : "Anurag", age : 20 },
         { id : '2', name : "Ankit", age : 20 }
       ],
-      showPersons : true
+      showPersons : false,
+      showCockpit : true
     }
+    console.log('App [constrctor]')
   }
   //ES7 way
   // state = {
@@ -29,15 +31,28 @@ class App extends Component {
   // }
 
   static getDerivedStateFromProps(props, state){
+    console.log('App [getDerivedStateFromProps]',props);
     return state;
   }
   
-  componentWillMount(){
-
-  }
+  // componentWillMount(){
+  //   console.log('App [componentWillMount]')
+  // }
 
   componentDidMount(){
-    
+    console.log('App [componentDidMount]')
+  }
+
+  componentWillUnmount(){
+    console.log('App [componentWillUnmount]')
+  }
+
+  shouldComponentUpdate(){
+    console.log('App [shouldComponentUpdate]')
+    return true;
+  }
+  componentDidUpdate(){
+    console.log('App [componentDidUpdate]')
   }
 
   deletePersonHandler = (personIndex) => {
@@ -70,8 +85,13 @@ class App extends Component {
     })
   }
 
+  cockpitHandler = () => {
+    this.setState({showCockpit:false})
+  }
+
 
   render() {
+    console.log('App [render]')
 
     //PREFERRED WAY OF OUTPUTTING CONDITIONALLY is using if more than ternary
     let persons = null;
@@ -86,7 +106,10 @@ class App extends Component {
     return (
       // <StyleRoot>
         <div className={classes.App}>
-          <Cockpit title={this.props.appTitle} persons={this.state.persons} showPersons={this.state.showPersons} toggle={this.togglePersonsHandler}/>
+          <button onClick={this.cockpitHandler}>Remove Cockpit</button> 
+          {this.state.showCockpit ? 
+          <Cockpit title={this.props.appTitle} personsLength={this.state.persons.length} showPersons={this.state.showPersons} toggle={this.togglePersonsHandler}/>
+            : null}
           {persons}
         </div>
       // </StyleRoot>
