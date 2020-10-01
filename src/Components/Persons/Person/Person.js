@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import classes from './Person.css';
+import Aux from '../../../Hoc/Aux'
+import withClass from '../../../Hoc/withClass'
 // import styled from 'styled-components';
 // import Radium from 'radium';
 
@@ -34,17 +36,28 @@ class Person extends Component{
         // if(rnd > 0.7){
         //     throw new Error('Something went wrong')
         // }
+
+        //JSX RENDERING USING HOC
         return(
             //<styledDiv>
-            <div className={classes.Person} >
+            <Aux>
             <p onClick={this.props.click}>I am {this.props.name} and I am {this.props.age} years old!</p>
             <p>{this.props.children}</p>
             <input type="text" onChange={this.props.change} value={this.props.name}></input>
-            </div>
+            </Aux>
             //</styledDiv>
         );
+
+        // //JSX RENDERING USING ARRAY
+        // return[
+        //     //<styledDiv>
+        //     <p key='i1' onClick={this.props.click}>I am {this.props.name} and I am {this.props.age} years old!</p>,
+        //     <p key='i2'>{this.props.children}</p>,
+        //     <input key='i3' type="text" onChange={this.props.change} value={this.props.name}></input>
+        //     //</styledDiv>
+        // ]
     }
 }
 
 // export default Radium(person);
-export default Person;
+export default withClass(Person, classes.Person);

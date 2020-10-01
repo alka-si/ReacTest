@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import classes from './App.css';
 import Persons from '../Components/Persons/Persons';
-import Cockpit from '../Components/Cockpit/Cockpit'
+import Cockpit from '../Components/Cockpit/Cockpit';
+import Aux from '../Hoc/Aux'
+import withClass from '../Hoc/withClass';
 
 // import Radium, {StyleRoot} from 'radium';
 
@@ -16,7 +18,8 @@ class App extends Component {
         { id : '2', name : "Ankit", age : 20 }
       ],
       showPersons : false,
-      showCockpit : true
+      showCockpit : true,
+      counter : 0
     }
     console.log('App [constrctor]')
   }
@@ -75,7 +78,19 @@ class App extends Component {
     const persons = [...this.state.persons];
     persons[personIndex] = person;
 
-    this.setState({persons : persons})
+    //WRONG WAY OF SETTING STATE AS MAY NOT BE IN SYNC WITH PREV STATE
+    // this.setState({
+    //   persons : persons,
+    //   counter : this.props.counter+1
+    // })
+
+    //RIGHT WAY TO UPDATE STATE
+    this.setState((prevState, props) => {
+      return {
+        persons : persons,
+        counter : prevState.counter+1
+      }
+    })
   }
 
   togglePersonsHandler = () => {
@@ -105,17 +120,21 @@ class App extends Component {
 
     return (
       // <StyleRoot>
-        <div className={classes.App}>
+        // <div className={classes.App}>
+          //<WithClass classes={classes.App}>
+          <Aux>
           <button onClick={this.cockpitHandler}>Remove Cockpit</button> 
           {this.state.showCockpit ? 
           <Cockpit title={this.props.appTitle} personsLength={this.state.persons.length} showPersons={this.state.showPersons} toggle={this.togglePersonsHandler}/>
             : null}
           {persons}
-        </div>
+          </Aux>
+          //</WithClass>
+        //</div>
       // </StyleRoot>
     );
   }     
 }
 
 // export default Radium(App);
-export default App;
+export default withClass(App, classes.App);
