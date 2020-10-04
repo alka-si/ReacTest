@@ -4,6 +4,7 @@ import Persons from '../Components/Persons/Persons';
 import Cockpit from '../Components/Cockpit/Cockpit';
 import Aux from '../Hoc/Aux'
 import withClass from '../Hoc/withClass';
+import AuthContext from '../Context/auth-context';
 
 // import Radium, {StyleRoot} from 'radium';
 
@@ -19,7 +20,8 @@ class App extends Component {
       ],
       showPersons : false,
       showCockpit : true,
-      counter : 0
+      counter : 0,
+      authenticated: false
     }
     console.log('App [constrctor]')
   }
@@ -104,6 +106,10 @@ class App extends Component {
     this.setState({showCockpit:false})
   }
 
+  loginHandler = () => {
+    this.setState({authenticated: true})
+  }
+
 
   render() {
     console.log('App [render]')
@@ -124,10 +130,16 @@ class App extends Component {
           //<WithClass classes={classes.App}>
           <Aux>
           <button onClick={this.cockpitHandler}>Remove Cockpit</button> 
-          {this.state.showCockpit ? 
-          <Cockpit title={this.props.appTitle} personsLength={this.state.persons.length} showPersons={this.state.showPersons} toggle={this.togglePersonsHandler}/>
+          <AuthContext.Provider value={{authenticated: this.state.authenticated, login: this.loginHandler}}>
+            {this.state.showCockpit ? 
+              <Cockpit 
+                title={this.props.appTitle} 
+                personsLength={this.state.persons.length} 
+                showPersons={this.state.showPersons} 
+                toggle={this.togglePersonsHandler}/>
             : null}
-          {persons}
+            {persons}
+          </AuthContext.Provider>
           </Aux>
           //</WithClass>
         //</div>

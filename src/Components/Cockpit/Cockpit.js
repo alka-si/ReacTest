@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useContext} from 'react';
 // import styled from 'styled-components';
 import classes from './Cockpit.css'
+import AuthContext from '../../Context/auth-context'
 
 // const StyledButton = styled.button`
 //   background-color : ${props => props.alt? 'red' : 'green'};
@@ -17,11 +18,15 @@ import classes from './Cockpit.css'
 
 const Cockpit = (props) => {
 
+  const toggleButtonRef = useRef(null)
+  // const authContext = useContext(AuthContext)
+
   useEffect(() => {
     console.log("Cockpit [useEffect]")
     const timer = setTimeout(() => {
       alert("data changed")
     },1000)
+    toggleButtonRef.current.click()
     return () => {
       clearTimeout(timer)
       console.log('Cockpit [cleanup useEffect]')
@@ -71,7 +76,11 @@ const Cockpit = (props) => {
             <p className={assignedClasses.join(' ')}>This is working!</p>
             {/* <button style={style} onClick={this.togglePersonsHandler}>Toggle Persons</button> */}
             {/* <StyledButton alt={props.showPersons} onClick={props.toggle}>Toggle Persons</StyledButton> */}
-            <button className={butnCls} onClick={props.toggle}>Toggle Persons</button>
+            <button ref={toggleButtonRef} className={butnCls} onClick={props.toggle}>Toggle Persons</button>
+            <AuthContext.Consumer>
+              {context => <button onClick={context.login}>Login</button>}
+            </AuthContext.Consumer>
+            {/* <button onClick={authContext.login}>Login</button> */}
         </div>
     )
 }
